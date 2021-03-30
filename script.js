@@ -1,8 +1,17 @@
+window.setTimeout(function () {
+  document.body.classList.add('loaded');
 let body = document.body;
 let string = window.location.search;
 let url = 'https://api.github.com/users/Maria-Sob89';
-
-fetch(url)
+const date = new Date();
+const getDate = new Promise((resolve, reject) => {
+  setTimeout(() => date ? resolve(date) : reject("Ошибка"), 100)
+})
+const getUrl = new Promise((resolve, reject) => {
+  setTimeout(() => url ? resolve(url) : reject("Ошибка URL!"), 100)
+})
+Promise.all([getUrl, getDate])
+    .then(([url, date]) => fetch(url))
     .then(res => res.json())
     .then(json => {
         console.log(json.avatar_url);
@@ -30,6 +39,7 @@ fetch(url)
             bio.innerHTML = 'Информация о пользователе недоступна';
         }
         body.append(bio);
-
+        body.append(date)
     })
-    .catch(err => alert('Информация о пользователе недоступна'));
+    .catch(err => console.log('Информация о пользователе недоступна'));
+  }, 3000);
